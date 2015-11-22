@@ -21,6 +21,7 @@ var app = app || {};
 		events: {
 			'keypress #new-todo': 'createOnEnter',
 			'click #clear-completed': 'clearCompleted',
+			'click #header .priority-btn': 'toggleInputPriority',
 			'click #toggle-all': 'toggleAllComplete'
 		},
 
@@ -30,6 +31,7 @@ var app = app || {};
 		initialize: function () {
 			this.allCheckbox = this.$('#toggle-all')[0];
 			this.$input = this.$('#new-todo');
+			this.$header = this.$('#header');
 			this.$footer = this.$('#footer');
 			this.$main = this.$('#main');
 			this.$list = $('#todo-list');
@@ -39,6 +41,8 @@ var app = app || {};
 			this.listenTo(app.todos, 'change:completed', this.filterOne);
 			this.listenTo(app.todos, 'filter', this.filterAll);
 			this.listenTo(app.todos, 'all', this.render);
+			this.listenTo(app.input, 'change', this.render);
+
 
 			// Suppresses 'add' events with {reset: true} and prevents the app view
 			// from being re-rendered for every model. Only renders when the 'reset'
@@ -51,6 +55,8 @@ var app = app || {};
 		render: function () {
 			var completed = app.todos.completed().length;
 			var remaining = app.todos.remaining().length;
+
+			this.$header.toggleClass('priority', app.input.get('priority'));
 
 			if (app.todos.length) {
 				this.$main.show();
@@ -100,7 +106,7 @@ var app = app || {};
 				title: this.$input.val().trim(),
 				order: app.todos.nextOrder(),
 				completed: false,
-				priority: false
+				priority: app.input.get('priority')
 			};
 		},
 
@@ -127,6 +133,10 @@ var app = app || {};
 					completed: completed
 				});
 			});
+		},
+
+		toggleInputPriority: function() {
+			app.input.prioritize();
 		}
 	});
 })(jQuery);
