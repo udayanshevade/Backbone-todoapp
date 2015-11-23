@@ -28,7 +28,9 @@ var app = app || {};
 
 		// Filter down the list of all todo items that have priority
 		priority: function() {
-			return this.where({priority: true});
+			return this.filter(function(item) {
+				return item.priority !== 0;
+			});
 		},
 
 		// We keep the Todos in sequential order, despite being saved by unordered

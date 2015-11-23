@@ -13,14 +13,18 @@ var app = app || {};
     localStorage: new Store('Input'),
 
     defaults: {
-      priority: false
+      priority: 0
     },
 
     // add priority to input
     prioritize: function() {
       this.save({
-        priority: !this.get('priority')
+        priority: this.incrementPriority(this.get('priority'))
       });
+    },
+
+    incrementPriority: function(p) {
+      return (p > 2) ? 0 : p + 1;
     }
   });
 

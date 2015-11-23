@@ -57,7 +57,9 @@ var app = app || {};
 			var completed = app.todos.completed().length;
 			var remaining = app.todos.remaining().length;
 
-			this.$header.toggleClass('priority', app.input.get('priority'));
+			this.$header.toggleClass('priority-1', (app.input.get('priority') === 1));
+			this.$header.toggleClass('priority-2', (app.input.get('priority') === 2));
+			this.$header.toggleClass('priority-3', (app.input.get('priority') === 3));
 
 			if (app.todos.length) {
 				this.$main.show();
