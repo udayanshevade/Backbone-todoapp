@@ -14,13 +14,20 @@ var app = app || {};
 		defaults: {
 			title: '',
 			completed: false,
-			priority: 0
+			priority: 0,
+			recycled: false
 		},
 
 		// Toggle the `completed` state of this todo item.
 		toggle: function () {
 			this.save({
 				completed: !this.get('completed')
+			});
+		},
+
+		recycle: function(){
+			this.save({
+				recycled: !this.get('recycled')
 			});
 		},
 

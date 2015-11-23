@@ -40,6 +40,7 @@ var app = app || {};
 			this.listenTo(app.todos, 'reset', this.addAll);
 			this.listenTo(app.todos, 'change:completed', this.filterOne);
 			this.listenTo(app.todos, 'change:priority', this.filterOne);
+			this.listenTo(app.todos, 'change:recycled', this.filterOne);
 			this.listenTo(app.todos, 'filter', this.filterAll);
 			this.listenTo(app.todos, 'all', this.render);
 			this.listenTo(app.input, 'change', this.render);
@@ -56,6 +57,7 @@ var app = app || {};
 		render: function () {
 			var completed = app.todos.completed().length;
 			var remaining = app.todos.remaining().length;
+			var recycled = app.todos.recycled().length;
 
 			this.$header.toggleClass('priority-1', (app.input.get('priority') === 1));
 			this.$header.toggleClass('priority-2', (app.input.get('priority') === 2));
@@ -67,7 +69,8 @@ var app = app || {};
 
 				this.$footer.html(this.statsTemplate({
 					completed: completed,
-					remaining: remaining
+					remaining: remaining,
+					recycled: recycled
 				}));
 
 				this.$('#filters li a')
@@ -103,13 +106,18 @@ var app = app || {};
 			app.todos.each(this.filterOne, this);
 		},
 
+		toggleFilterClass: function() {
+			console.log(this);
+		},
+
 		// Generate the attributes for a new Todo item.
 		newAttributes: function () {
 			return {
 				title: this.$input.val().trim(),
 				order: app.todos.nextOrder(),
 				completed: false,
-				priority: app.input.get('priority')
+				priority: app.input.get('priority'),
+				recycled: false
 			};
 		},
 

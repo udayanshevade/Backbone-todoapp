@@ -34,6 +34,7 @@
 				<label><%- title %></label>
 				<button class="priority-btn"></button>
 				<button class="edit-btn"></button>
+				<button class="recycle-btn"></button>
 				<button class="destroy"></button>
 			</div>
 			<input class="edit" value="<%- title %>">
@@ -52,6 +53,9 @@
 				</li>
 				<li>
 					<a href="#/completed">Completed</a>
+				</li>
+				<li class="recycle-btn">
+					<a href="#/recycled">&#9851; <% if (recycled) { %> <span id="recycle-count"> (<%= recycled %>) </span></a> <% } %>
 				</li>
 			</ul>
 			<% if (completed) { %>

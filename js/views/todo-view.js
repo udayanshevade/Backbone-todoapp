@@ -19,6 +19,7 @@ var app = app || {};
 		events: {
 			'click .toggle': 'toggleCompleted',
 			'click .priority-btn': 'togglePriority',
+			'click .recycle-btn': 'toggleRecycled',
 			'dblclick label': 'edit',
 			'click .edit-btn': 'edit',
 			'click .destroy': 'clear',
@@ -52,6 +53,7 @@ var app = app || {};
 
 			this.$el.html(this.template(this.model.toJSON()));
 			this.$el.toggleClass('completed', this.model.get('completed'));
+			this.$el.toggleClass('recycled', this.model.get('recycled'));
 			this.$el.toggleClass('priority-1', (this.model.get('priority') === 1));
 			this.$el.toggleClass('priority-2', (this.model.get('priority') === 2));
 			this.$el.toggleClass('priority-3', (this.model.get('priority') === 3));
@@ -65,17 +67,29 @@ var app = app || {};
 		},
 
 		isHidden: function () {
-			if (this.model.get('completed')) {
-				return app.TodoFilter === 'active' ||
-							app.TodoFilter === 'priority';
+			if (this.model.get('recycled')) {
+				if (app.TodoFilter !== 'recycled') {
+					return true;
+				}
 			}
 			else {
-				if (this.model.get('priority')) {
-					return app.TodoFilter === 'completed';
+				if (app.TodoFilter === 'recycled') {
+					return true;
 				}
 				else {
-					return app.TodoFilter === 'priority' ||
-								app.TodoFilter === 'completed';
+					if (this.model.get('completed')) {
+						return app.TodoFilter === 'active' ||
+									app.TodoFilter === 'priority';
+					}
+					else {
+						if (this.model.get('priority')) {
+							return app.TodoFilter === 'completed';
+						}
+						else {
+							return app.TodoFilter === 'priority' ||
+										app.TodoFilter === 'completed';
+						}
+					}
 				}
 			}
 		},
@@ -85,9 +99,14 @@ var app = app || {};
 			this.model.toggle();
 		},
 
-		// Toggle the priority of a view
+		// Toggle the priority state of a todo
 		togglePriority: function() {
 			this.model.prioritize();
+		},
+
+		// Toggle the recycled property
+		toggleRecycled: function() {
+			this.model.recycle();
 		},
 
 		// Switch this view into `"editing"` mode, displaying the input field.

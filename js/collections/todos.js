@@ -26,6 +26,10 @@ var app = app || {};
 			return this.where({completed: false});
 		},
 
+		recycled: function() {
+			return this.where({recycled: true})
+		},
+
 		// Filter down the list of all todo items that have priority
 		priority: function() {
 			return this.filter(function(item) {

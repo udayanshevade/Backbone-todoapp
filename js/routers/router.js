@@ -18,6 +18,8 @@ var app = app || {};
 			// Trigger a collection filter event, causing hiding/unhiding
 			// of Todo view items
 			app.todos.trigger('filter');
+
+			$('#main').toggleClass('recycled', (param === 'recycled'));
 		}
 	});
 
