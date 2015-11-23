@@ -63,9 +63,19 @@ var app = app || {};
 		},
 
 		isHidden: function () {
-			return this.model.get('completed') ?
-				app.TodoFilter === 'active' :
-				app.TodoFilter === 'completed';
+			if (this.model.get('completed')) {
+				return app.TodoFilter === 'active' ||
+							app.TodoFilter === 'priority';
+			}
+			else {
+				if (this.model.get('priority')) {
+					return app.TodoFilter === 'completed';
+				}
+				else {
+					return app.TodoFilter === 'priority' ||
+								app.TodoFilter === 'completed';
+				}
+			}
 		},
 
 		// Toggle the `"completed"` state of the model.

@@ -39,6 +39,7 @@ var app = app || {};
 			this.listenTo(app.todos, 'add', this.addOne);
 			this.listenTo(app.todos, 'reset', this.addAll);
 			this.listenTo(app.todos, 'change:completed', this.filterOne);
+			this.listenTo(app.todos, 'change:priority', this.filterOne);
 			this.listenTo(app.todos, 'filter', this.filterAll);
 			this.listenTo(app.todos, 'all', this.render);
 			this.listenTo(app.input, 'change', this.render);
@@ -135,6 +136,7 @@ var app = app || {};
 			});
 		},
 
+		// Mark current input with priority
 		toggleInputPriority: function() {
 			app.input.prioritize();
 		}
